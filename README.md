@@ -1,35 +1,102 @@
-## Overview
 
-ReUI is a collection of open-source, copy-and-paste components built with React, Next.js, and Tailwind CSS.
-Unlike typical UI libraries that focus solely on components, ReUI goes further by delivering
-fully functional apps that demonstrate each component in real-world use cases.
 
-**Live Demo** → [https://reui.io](https://reui.io)
+Overview
 
-## Documentation
+This project is a web application built using modern technologies, following best practices and the Metronic design system. It includes user authentication, database management, and email notifications.
 
-Follow [ReUI Documentation](https://reui.io/docs) to get started with ReUI quckly.
+Technologies Used
 
-## Install Components
+Next.js – Server-side rendering and frontend framework
 
-Follow [Components Setup](https://reui.io/docs/installation) guide to start using ReUI components in your React projects.
+TypeScript – Type safety and improved development experience
 
-## Install Apps
+MongoDB + Prisma – Database management with ORM
 
-Kickstart your Next.js projects with ReUI apps using the [Apps Setup Guide](https://reui.io/docs/apps).
+Auth.js (NextAuth.js) – Authentication with Google and GitHub
 
-> [!NOTE]
-> We use `Next.js`, `Next.js API routes`, `Prisma ORM`, and `PostgreSQL` by default for app prototyping, delivering full frontend and backend logic. This setup enables you to seamlessly adapt our Apps to any `React` framework or backend of your choice.
+NodeMailer – Email notifications for password reset
 
-## Contributing
+Metronic – UI components and styling
 
-You are welcome for contribution to imrpvoe ReUI.
-Check out our [Contribution Guidelines](https://github.com/keenthemes/reui/blob/main/CONTRIBUTING.md)
-to learn how to submit improvements and new features.
 
-## License
+Features
 
-ReUI is licensed under the [MIT License](https://github.com/keenthemes/reui/blob/main/LICENSE.md).
-If you have any questions just reach us via [@reui_io](https://x.com/reui_io) or [hello@reui.io](mailto:hello@reui.io).
+User Authentication
 
-Happy coding with ReUI!
+Sign-in, Sign-up, Sign-out
+
+OAuth with Google and GitHub using Auth.js
+
+Forgot Password with email reset via NodeMailer
+
+
+Landing Page
+
+User Management
+
+Register users and manage profiles
+
+
+Database Schema
+
+Prisma schema for structured data handling
+
+
+Secure API Routes
+
+Protected routes with authentication middleware
+
+
+
+Installation
+
+1. Clone the repository:
+
+git clone [repository_url]
+
+
+2. Navigate to the project directory:
+
+cd project-name
+
+
+3. Install dependencies:
+
+npm install
+
+
+4. Set up environment variables: Create a .env file and add:
+
+DATABASE_URL=mongodb+srv://...
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+EMAIL_SERVER=smtp://your-smtp-server
+
+
+5. Run database migrations:
+
+npx prisma migrate dev
+
+
+6. Start the development server:
+
+npm run dev
+
+
+
+Usage
+
+Visit http://localhost:3000
+
+Register or sign in with Google/GitHub
+
+Reset password using the forgot password option
+
+
+
+
+
