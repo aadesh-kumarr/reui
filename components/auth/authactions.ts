@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export async function handleSignIn(formData: FormData) {
   const formObject = Object.fromEntries(formData.entries());
@@ -15,6 +16,8 @@ export async function handleSignIn(formData: FormData) {
   } else {
     console.log(result?.status);
     console.log("Sign-in successful:", result);
+    // Redirect to home page after successful sign in
+    redirect("/home");
   }
 }
 
@@ -36,6 +39,13 @@ export async function handleSignUp(formData: FormData) {
 
   if (response.ok) {
     alert("Signup successful. You can now sign in.");
+    // After successful signup, sign in the user and redirect to home
+    const result = await signIn("credentials", { ...formObject, redirect: false });
+    if (result?.error) {
+      alert("Auto sign-in failed. Please sign in manually.");
+    } else {
+      redirect("/home");
+    }
   } else {
     alert("Signup failed. Try again.");
   }

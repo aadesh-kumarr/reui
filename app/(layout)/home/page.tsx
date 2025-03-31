@@ -1,78 +1,98 @@
-"use client"
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useEffect, useState } from "react"
-import Link from "next/link"
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
-  type ColumnDef,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
   type PaginationState,
   type SortingState,
-  useReactTable,
-} from "@tanstack/react-table"
-import { DataGrid, DataGridContainer } from "@/components/ui/data-grid"
-import { DataGridPagination } from "@/components/ui/data-grid-pagination"
-import { DataGridTable } from "@/components/ui/data-grid-table"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { Search, Users, UserPlus, Calendar, RefreshCw } from "lucide-react"
+} from '@tanstack/react-table';
+import { Calendar, RefreshCw, Search, UserPlus, Users } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { signOut } from 'next-auth/react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { DataGrid, DataGridContainer } from '@/components/ui/data-grid';
+import { DataGridPagination } from '@/components/ui/data-grid-pagination';
+import { DataGridTable } from '@/components/ui/data-grid-table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 
 interface IData {
-  id: string
-  name: string
-  email: string
-  createdAt: string
-  updatedAt: string
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function DataGridDemo() {
-  const [data, setData] = useState<IData[]>([])
-  const [filteredData, setFilteredData] = useState<IData[]>([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState<IData[]>([]);
+  const [filteredData, setFilteredData] = useState<IData[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
-  })
-  const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: true }])
+  });
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'name', desc: true },
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const response = await fetch("/api/home")
-        const result = await response.json()
-        console.log("Fetched Data:", result)
+        const response = await fetch('/api/home');
+        const result = await response.json();
+        console.log('Fetched Data:', result);
 
         if (!result || !Array.isArray(result.users)) {
-          console.error("Error: Expected an array but received", result)
-          return
+          console.error('Error: Expected an array but received', result);
+          return;
         }
 
-        const formattedUsers = result.users.map((user: Partial<IData>, index: number) => ({
-          id: user.id ?? index.toString(),
-          name: user.name ?? "Unknown",
-          email: user.email ?? "No Email",
-          createdAt: user.createdAt ?? "N/A",
-          updatedAt: user.updatedAt ?? "N/A",
-        }))
+        const formattedUsers = result.users.map(
+          (user: Partial<IData>, index: number) => ({
+            id: user.id ?? index.toString(),
+            name: user.name ?? 'Unknown',
+            email: user.email ?? 'No Email',
+            createdAt: user.createdAt ?? 'N/A',
+            updatedAt: user.updatedAt ?? 'N/A',
+          }),
+        );
 
-        setData(formattedUsers)
-        setFilteredData(formattedUsers)
+        setData(formattedUsers);
+        setFilteredData(formattedUsers);
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error('Error fetching data:', error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (searchQuery) {
@@ -80,43 +100,52 @@ export default function DataGridDemo() {
         (user) =>
           user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           user.email.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-      setFilteredData(filtered)
+      );
+      setFilteredData(filtered);
     } else {
-      setFilteredData(data)
+      setFilteredData(data);
     }
-  }, [searchQuery, data])
+  }, [searchQuery, data]);
 
   const columns: ColumnDef<IData>[] = [
     {
-      accessorKey: "name",
-      header: "Name",
-      cell: (info) => <span className="font-medium">{info.getValue() as string}</span>,
+      accessorKey: 'name',
+      header: 'Name',
+      cell: (info) => (
+        <span className="font-medium">{info.getValue() as string}</span>
+      ),
       size: 175,
     },
     {
-      accessorKey: "email",
-      header: "Email",
+      accessorKey: 'email',
+      header: 'Email',
       cell: (info) => (
-        <Link href={`mailto:${info.getValue()}`} className="hover:text-primary hover:underline ">
+        <Link
+          href={`mailto:${info.getValue()}`}
+          className="hover:text-primary hover:underline "
+        >
           {info.getValue() as string}
         </Link>
       ),
       size: 150,
     },
     {
-      accessorKey: "createdAt",
-      header: "Created At",
-      cell: (info) => <span>{new Date(info.getValue() as string).toLocaleDateString()}</span>,
+      accessorKey: 'createdAt',
+      header: 'Created At',
+      cell: (info) => (
+        <span>{new Date(info.getValue() as string).toLocaleDateString()}</span>
+      ),
       size: 150,
     },
     {
-      accessorKey: "updatedAt",
-      header: "Updated At",
-      cell: (info) => <span>{new Date(info.getValue() as string).toLocaleDateString()}</span>,
+      accessorKey: 'updatedAt',
+      header: 'Updated At',
+      cell: (info) => (
+        <span>{new Date(info.getValue() as string).toLocaleDateString()}</span>
+      ),
       size: 150,
     },
-  ]
+  ];
 
   const table = useReactTable({
     columns,
@@ -132,62 +161,77 @@ export default function DataGridDemo() {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-  })
+  });
 
   // Calculate statistics
-  const totalUsers = data.length
+  const totalUsers = data.length;
   const recentUsers = data.filter((user) => {
-    const createdDate = new Date(user.createdAt)
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-    return createdDate > thirtyDaysAgo
-  }).length
+    const createdDate = new Date(user.createdAt);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return createdDate > thirtyDaysAgo;
+  }).length;
 
   const handleRefresh = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await fetch("/api/home")
-      const result = await response.json()
+      const response = await fetch('/api/home');
+      const result = await response.json();
 
       if (!result || !Array.isArray(result.users)) {
-        console.error("Error: Expected an array but received", result)
-        return
+        console.error('Error: Expected an array but received', result);
+        return;
       }
 
-      const formattedUsers = result.users.map((user: Partial<IData>, index: number) => ({
-        id: user.id ?? index.toString(),
-        name: user.name ?? "Unknown",
-        email: user.email ?? "No Email",
-        createdAt: user.createdAt ?? "N/A",
-        updatedAt: user.updatedAt ?? "N/A",
-      }))
+      const formattedUsers = result.users.map(
+        (user: Partial<IData>, index: number) => ({
+          id: user.id ?? index.toString(),
+          name: user.name ?? 'Unknown',
+          email: user.email ?? 'No Email',
+          createdAt: user.createdAt ?? 'N/A',
+          updatedAt: user.updatedAt ?? 'N/A',
+        }),
+      );
 
-      setData(formattedUsers)
-      setFilteredData(formattedUsers)
+      setData(formattedUsers);
+      setFilteredData(formattedUsers);
     } catch (error) {
-      console.error("Error refreshing data:", error)
+      console.error('Error refreshing data:', error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-         <Avatar>
-      <AvatarImage src="/media/avatars/14.png" alt="@crudhunt" />
-      <AvatarFallback>CH</AvatarFallback>
-    </Avatar>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar>
+            <AvatarImage src="/media/avatars/14.png" alt="@crudhunt" />
+            <AvatarFallback>CH</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+        <Button onClick={() => signOut()}>Sign Out</Button>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
-          <p className="text-muted-foreground mt-1">View and manage all registered users in the system</p>
+          <p className="text-muted-foreground mt-1">
+            View and manage all registered users in the system
+          </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isLoading}
+          >
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-
         </div>
       </div>
 
@@ -199,18 +243,24 @@ export default function DataGridDemo() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalUsers}</div>
-            <p className="text-xs text-muted-foreground">Registered users in the system</p>
+            <p className="text-xs text-muted-foreground">
+              Registered users in the system
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">New Users (30 days)</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              New Users (30 days)
+            </CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{recentUsers}</div>
             <p className="text-xs text-muted-foreground">
-              {recentUsers > 0 ? `+${recentUsers} from last month` : "No new users this month"}
+              {recentUsers > 0
+                ? `+${recentUsers} from last month`
+                : 'No new users this month'}
             </p>
           </CardContent>
         </Card>
@@ -267,9 +317,7 @@ export default function DataGridDemo() {
             </CardContent>
           </Card>
         </TabsContent>
-
       </Tabs>
     </div>
-  )
+  );
 }
-
