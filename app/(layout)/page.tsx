@@ -39,7 +39,7 @@ export default function Page() {
             <CardFooter>
               <div className="mt-4 text-center  mx-auto">
                 <p className="text-sm text-gray-600">
-                  Don't have an account?
+                  Don&apos;t have an account?
                 </p>
                 <Button
                   variant="outline"

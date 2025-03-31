@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { User, UserStatus } from '@/app/models/user';
 
 /**
  * Checks if a record is unique in a Prisma table.
@@ -51,16 +50,3 @@ export async function isUnique<T extends keyof PrismaClient & string>(
  * Fetches a demo user by email from the `User` table.
  * @returns - User with related role data or `null`.
  */
-export async function getDemoUser(): Promise<User | null> {
-  const user = await prisma.user.findUnique({
-    where: { email: 'admin@reui.io' },
-    include: { role: true }, // Ensures role relation is included
-  });
-
-  if (!user) return null;
-
-  return {
-    ...user,
-    status: user.status as UserStatus,
-  };
-}
