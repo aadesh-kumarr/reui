@@ -12,7 +12,7 @@ import {
   type PaginationState,
   type SortingState,
 } from '@tanstack/react-table';
-import { Calendar, RefreshCw, Search, UserPlus, Users } from 'lucide-react';
+import {  RefreshCw, Search, UserPlus, Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -29,9 +29,7 @@ import { DataGridTable } from '@/components/ui/data-grid-table';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -211,8 +209,8 @@ export default function DataGridDemo() {
             <AvatarFallback>CH</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-        <Button onClick={() => signOut()}>Sign Out</Button>
+        <DropdownMenuContent className="p-4">
+          <Button onClick={() => signOut({ redirectTo: "/" })}>Sign Out</Button>
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -282,7 +280,7 @@ export default function DataGridDemo() {
           </div>
         </div>
 
-        <TabsContent value="all" className="m-0">
+        <TabsContent value="all" className="mt-4">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle>User Directory</CardTitle>
