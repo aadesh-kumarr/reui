@@ -35,6 +35,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { useSession } from 'next-auth/react';
 
 interface IData {
   id: string;
@@ -45,6 +46,14 @@ interface IData {
 }
 
 export default function DataGridDemo() {
+  const { data: session } = useSession();
+  const userName = session?.user?.name || 'User';
+  const userInitials = userName
+    .split(' ')
+    .map((name) => name[0])
+    .join('')
+    .toUpperCase();
+
   const [data, setData] = useState<IData[]>([]);
   const [filteredData, setFilteredData] = useState<IData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -205,8 +214,8 @@ export default function DataGridDemo() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src="/media/avatars/14.png" alt="@crudhunt" />
-            <AvatarFallback>CH</AvatarFallback>
+            <AvatarImage src={session?.user?.image || ''} alt={userName} />
+            <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-4">

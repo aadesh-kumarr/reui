@@ -47,9 +47,9 @@ export default function Page() {
                 >
                   Switch to Login
                 </Button>
-                <Button onClick={ResetPass} variant={'outline'} className="block mt-2 text-sm mx-auto text-center text-blue-600">
+                <div onClick={ResetPass}  className="block mt-2 text-sm mx-auto text-center text-blue-600">
                   Forget password?
-                </Button>
+                </div>
               </div>
             </CardFooter>
           </Card>
@@ -71,9 +71,9 @@ export default function Page() {
                 >
                   Switch to Sign Up
                 </Button>
-                <Button variant={'outline'} onClick={ResetPass} className="mx-auto text-center block mt-2 text-sm text-blue-600">
+                <div onClick={ResetPass} className="mx-auto text-center block mt-2 text-sm text-blue-600">
                   Forget password?
-                </Button>
+                </div>
               </div>
             </CardFooter>
           </Card>
