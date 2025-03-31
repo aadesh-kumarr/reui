@@ -1,5 +1,5 @@
 "use client"
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import {
@@ -173,6 +173,10 @@ export default function DataGridDemo() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+         <Avatar>
+      <AvatarImage src="/media/avatars/14.png" alt="@crudhunt" />
+      <AvatarFallback>CH</AvatarFallback>
+    </Avatar>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
