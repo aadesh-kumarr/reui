@@ -48,7 +48,7 @@ export default function Login() {
           Login
         </button>
       </form>
-      <div className="text-sm text-center mt-8 flex flex-col">
+      <div className="text-sm text-center mt-4 flex flex-col">
      <Selectors />
       </div>
     </div>

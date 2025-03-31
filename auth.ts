@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import Resend from "next-auth/providers/resend"
 import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/prisma";
@@ -9,7 +10,7 @@ import bcrypt from "bcrypt";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    Google,GitHub,
+    Google,GitHub,Resend,
     Credentials({
       credentials: {
         email: { label: "Email", type: "text", placeholder: "your-email@example.com" },
