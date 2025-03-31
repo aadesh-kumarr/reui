@@ -54,7 +54,7 @@ export default function DataGridDemo() {
           return
         }
 
-        const formattedUsers = result.users.map((user: any, index: number) => ({
+        const formattedUsers = result.users.map((user: Partial<IData>, index: number) => ({
           id: user.id ?? index.toString(),
           name: user.name ?? "Unknown",
           email: user.email ?? "No Email",
@@ -154,7 +154,7 @@ export default function DataGridDemo() {
         return
       }
 
-      const formattedUsers = result.users.map((user: any, index: number) => ({
+      const formattedUsers = result.users.map((user: Partial<IData>, index: number) => ({
         id: user.id ?? index.toString(),
         name: user.name ?? "Unknown",
         email: user.email ?? "No Email",
