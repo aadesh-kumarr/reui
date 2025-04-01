@@ -20,7 +20,6 @@ interface IData {
 }
 
 export default function DataGridDemo() {
-
   const [data, setData] = useState<IData[]>([]);
   const [filteredData, setFilteredData] = useState<IData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -89,7 +88,12 @@ export default function DataGridDemo() {
       accessorKey: 'name',
       header: 'Name',
       cell: (info) => (
-        <span className="font-medium">{info.getValue() as string}</span>
+        <Link
+          href={`/user?id=${info.row.original.id}`}
+          className="font-medium hover:underline"
+        >
+          {info.getValue() as string}
+        </Link>
       ),
       size: 175,
     },
@@ -125,7 +129,7 @@ export default function DataGridDemo() {
     },
   ];
 
-  // pagination n and other configs
+  // pagination and other configs
   const table = useReactTable({
     columns,
     data: filteredData,
