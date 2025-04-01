@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-
+export const dynamic = 'force-dynamic';
 interface IUser {
   id: string;
   name: string;
@@ -13,19 +13,12 @@ interface IUser {
   updatedAt: string;
 }
 
-export default function UserDetailPage() {
-  const searchParams = useSearchParams();
+function UserDetailContent({ userId }: { userId: string }) {
   const router = useRouter();
-  const userId = searchParams.get('id');
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!userId) {
-      router.push('/home');
-      return;
-    }
-
     const fetchUser = async () => {
       setIsLoading(true);
       try {
@@ -46,7 +39,7 @@ export default function UserDetailPage() {
     };
 
     fetchUser();
-  }, [userId, router]);
+  }, [userId]);
 
   if (isLoading) {
     return (
@@ -104,5 +97,26 @@ export default function UserDetailPage() {
         Back to User List
       </Button>
     </div>
+  );
+}
+
+function UserDetailWrapper() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get('id');
+  const router = useRouter();
+
+  if (!userId) {
+    router.push('/home');
+    return null;
+  }
+
+  return <UserDetailContent userId={userId} />;
+}
+
+export default function UserDetailPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UserDetailWrapper />
+    </Suspense>
   );
 }
