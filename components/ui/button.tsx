@@ -149,6 +149,7 @@ const buttonVariants = cva(
         appearance: 'default',
         className: 'shadow-xs shadow-black/5',
       },
+      
       {
         variant: 'destructive',
         mode: 'default',

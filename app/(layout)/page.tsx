@@ -60,7 +60,7 @@ export default function Page() {
               <Login />
             </CardContent>
             <CardFooter>
-              <div className="mt-4 text-center mx-auto">
+              <div className="m-4 text-center mx-auto ">
                 <p className="text-sm text-gray-600">
                   Don&apos;t have an account?
                 </p>

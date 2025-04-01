@@ -5,7 +5,8 @@ import '@/styles/globals.css';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import { Card, CardContent } from '@/components/ui/card';
-import { SessionProvider } from 'next-auth/react'; // Added import
+import { SessionProvider } from 'next-auth/react'; 
+
 
 const inter = Inter({ subsets: ['latin'] });
 

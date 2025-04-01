@@ -1,42 +1,17 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type PaginationState,
-  type SortingState,
-} from '@tanstack/react-table';
-import {  RefreshCw, Search, UserPlus, Users } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type PaginationState, type SortingState } from '@tanstack/react-table';
+import { RefreshCw, Search, UserPlus, Users } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataGrid, DataGridContainer } from '@/components/ui/data-grid';
 import { DataGridPagination } from '@/components/ui/data-grid-pagination';
 import { DataGridTable } from '@/components/ui/data-grid-table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import { useSession } from 'next-auth/react';
-
 interface IData {
   id: string;
   name: string;
@@ -46,13 +21,6 @@ interface IData {
 }
 
 export default function DataGridDemo() {
-  const { data: session } = useSession();
-  const userName = session?.user?.name || 'User';
-  const userInitials = userName
-    .split(' ')
-    .map((name) => name[0])
-    .join('')
-    .toUpperCase();
 
   const [data, setData] = useState<IData[]>([]);
   const [filteredData, setFilteredData] = useState<IData[]>([]);
@@ -66,6 +34,7 @@ export default function DataGridDemo() {
     { id: 'name', desc: true },
   ]);
 
+  // data fetching
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -101,6 +70,7 @@ export default function DataGridDemo() {
     fetchData();
   }, []);
 
+  // search functionality
   useEffect(() => {
     if (searchQuery) {
       const filtered = data.filter(
@@ -114,6 +84,7 @@ export default function DataGridDemo() {
     }
   }, [searchQuery, data]);
 
+  // table columns
   const columns: ColumnDef<IData>[] = [
     {
       accessorKey: 'name',
@@ -154,6 +125,7 @@ export default function DataGridDemo() {
     },
   ];
 
+  // pagination n and other configs
   const table = useReactTable({
     columns,
     data: filteredData,
@@ -179,6 +151,7 @@ export default function DataGridDemo() {
     return createdDate > thirtyDaysAgo;
   }).length;
 
+  // reloading funcstionality
   const handleRefresh = async () => {
     setIsLoading(true);
     try {
@@ -211,17 +184,9 @@ export default function DataGridDemo() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Avatar>
-            <AvatarImage src={session?.user?.image || ''} alt={userName} />
-            <AvatarFallback>{userInitials}</AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="p-4">
-          <Button onClick={() => signOut({ redirectTo: "/" })}>Sign Out</Button>
-        </DropdownMenuContent>
-      </DropdownMenu>
+
+
+      {/* header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
@@ -242,6 +207,7 @@ export default function DataGridDemo() {
         </div>
       </div>
 
+      {/* total user and new user cards  */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -273,6 +239,7 @@ export default function DataGridDemo() {
         </Card>
       </div>
 
+      {/* tabs and search bar with pagination etc*/}
       <Tabs defaultValue="all" className="w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div className="flex w-full sm:w-auto gap-2">
