@@ -99,7 +99,8 @@ export default function DataGridDemo() {
       cell: (info) => (
         <Link
           href={`mailto:${info.getValue()}`}
-          className="hover:text-primary hover:underline "
+          className="hover:text-primary hover:underline truncate block max-w-[150px]"
+          title={info.getValue() as string}
         >
           {info.getValue() as string}
         </Link>
