@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
-import Navbar from '@/components/auth/navbar';
 import '@/styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 
@@ -15,7 +14,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         style={{ overflow: 'visible !important', marginRight: '0 !important' }}
       >
         <SessionProvider>
-          <Navbar />
           {children}
         </SessionProvider>
       </body>
